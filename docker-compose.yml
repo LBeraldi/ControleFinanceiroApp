@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cf-app
+    ports:
+      - "5000:5000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      BRAPI_TOKEN: ${BRAPI_TOKEN:-}
+    volumes:
+      - cf_app_data:/app/controle-financeiro/src/database
+    restart: unless-stopped
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    profiles:
+      - tunnel
+    depends_on:
+      - app
+    command: tunnel --no-autoupdate --url http://app:5000
+    restart: unless-stopped
+
+volumes:
+  cf_app_data:

@@ -1,0 +1,12 @@
+.git
+.gitignore
+.vscode
+**/node_modules
+**/dist
+**/__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+controle-financeiro/src/database/app.db
+controle-financeiro/src/static
